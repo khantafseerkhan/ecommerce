@@ -2,7 +2,7 @@
 const HeaderLeft=()=>{
     return (
         <div className="header-left-section">
-            left ... 
+           <img src={"./shopping-icon.png"} />
         </div>
     )
 }

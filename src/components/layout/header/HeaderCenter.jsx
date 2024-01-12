@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const HeaderCenter=()=>{
   const menuList=[
@@ -7,32 +7,27 @@ const HeaderCenter=()=>{
         path:"/home"
     },
     {
-        name:"Men's",
+        name:"Products",
         path:"/products"
     },
-    {
-        name:"Women's",
-        path:"/products"
-    },
-    {
-        name:"Electronics",
-        path:"/products"
-    }
+   
   ];
 
+  const url=useLocation();
   const navigate=useNavigate();
 
-  const redirctTo=(url)=>{
-    navigate(url);        
-}
 
+  
     return (
         <div className="header-center-section">
             <ul>
             {
            menuList.length>0 && menuList.map(element=>{
             return(
-                <li onClick={()=>redirctTo(element.path)}>{element.name}</li>
+                // <Link to={element.path}>
+                <li onClick={()=>navigate(element.path)} key={element.name}  className={url.pathname==element.path?'activeTab':''}>{element.name}</li>
+                // </Link>
+                
             )
             })
            }

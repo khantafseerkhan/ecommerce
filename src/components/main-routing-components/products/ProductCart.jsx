@@ -19,8 +19,7 @@ const ProductCart = ({
         >
             <div className="product-img"><img src={img}/></div>
             <div className="product-title">{title}</div>
-            <div className="product-rating">{rating?.count}</div>
-            <div className="product-pricing">{price}</div>
+            <div className="product-pricing">$ {price}</div>
             {/* <div className="product-footer">
                 <Button variant="primary" 
                 className={"product-footer-button"}

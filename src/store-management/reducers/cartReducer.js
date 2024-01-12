@@ -24,6 +24,11 @@ export const cartSlice = createSlice({
       updateToCart:(state,action)=>{
         let tempCart=prepareCart(state.cartDetails,action.payload,action.type);
         state.cartDetails=tempCart
+      },
+
+      removeFromCart:(state,action)=>{
+        let tempCart=prepareCart(state.cartDetails,action.payload,action.type);
+        state.cartDetails=tempCart
       }
    
     }
@@ -31,8 +36,6 @@ export const cartSlice = createSlice({
 
   const prepareCart=(cartData,payloadData,type)=>{
     let tempCart=JSON.parse(JSON.stringify(cartData));
-    console.log(payloadData)
-    console.log(type);
     if(type=="cart/addToCart"){
         tempCart.lineItems.push(payloadData);
         tempCart.lastUpdateAt=new Date();
@@ -58,7 +61,7 @@ export const cartSlice = createSlice({
        return tempCart;
 
     }else if(type=="cart/removeFromCart"){
-      let index =tempCart.lineItems.findIndex(element=>element.id==payloadData.id);
+      let index =payloadData;
       tempCart.lineItems.splice(index,1)
       tempCart.totalAmount=0;
         tempCart.totalItems=0;
@@ -84,7 +87,8 @@ export const cartSlice = createSlice({
   
   export const {
     addToCart,
-    updateToCart
+    updateToCart,
+    removeFromCart
  
   } = cartSlice.actions
   
