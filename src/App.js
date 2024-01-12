@@ -21,7 +21,7 @@ function App() {
          <div className="body-container">
 
          <Routes>
-            <Route path="" element={<Products />} />
+            <Route path="/" element={<Products />} />
             <Route path="home" element={<Products />} />
             <Route path="products" element={<Products />} />
             <Route path="product/:id" element={<Product />} />
