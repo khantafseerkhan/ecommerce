@@ -11,6 +11,10 @@ import { redirect, useNavigate } from "react-router-dom";
 import { Search } from "@mui/icons-material";
 import CustomPagination from "../../CustomPagination";
 import Filters from "./Filter";
+import {
+  getAllProducts,
+  getCategoriesList,
+} from "../../../services/products.service";
 
 const Products = () => {
   const [productList, setProductList] = useState([]);
@@ -22,35 +26,29 @@ const Products = () => {
   const [selectedFilteredList, setSelectedFilteredList] = useState([]);
 
   useEffect(() => {
-    getCategories();
-
-    getProductsList();
+    const fetchData = async () => {
+      try {
+        const productData = await getAllProducts();
+        setTotalProducts(productData);
+        setFilteredProducts(productData);
+  
+        const categoriesData = await getCategoriesList();
+        setCategoriesList(categoriesData);
+      } catch (error) {
+        // Handle errors
+        console.error("Error fetching data:", error);
+        setTotalProducts([]);
+        setFilteredProducts([]);
+        setCategoriesList([]);
+      }
+    };
+  
+    fetchData();
   }, []);
 
-  const getCategories = () => {
-    fetch(`https://fakestoreapi.com/products/categories`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCategoriesList(data);
-      });
-  };
-
-  const getProductsList = () => {
-    fetch(`https://fakestoreapi.com/products`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTotalProducts(data);
-        setFilteredProducts(data);
-      });
-  };
-
   const onPageChange = (pageNumber) => {
-    let fromIndex = pageNumber;
-    fromIndex = fromIndex == 1 ? 0 : (fromIndex - 1) * itemPerPage;
-    let tempTotalProducts = JSON.parse(
-      JSON.stringify(filteredProducts ? filteredProducts : totalProducts)
-    );
-    let tempArray = tempTotalProducts.splice(fromIndex, itemPerPage);
+    const fromIndex = (pageNumber - 1) * itemPerPage;
+    const tempArray = filteredProducts.slice(fromIndex, fromIndex + itemPerPage);
     setProductList(tempArray);
   };
 
@@ -158,7 +156,7 @@ const Products = () => {
             })
           ) : (
             <Grid item xs={12}>
-               <div className="filter-container">
+              <div className="filter-container">
                 <i>Products Not Availble ... </i>
               </div>
             </Grid>

@@ -68,9 +68,8 @@ const prepareCart = (cartData, payloadData, type) => {
     tempCart.totalItems = 0;
     tempCart.lineItems.forEach((element) => {
       tempCart.totalAmount += element.quantity * element.price;
-    //  tempCart.totalItems += 1;
-    tempCart.totalItems += element.quantity;
-
+      //  tempCart.totalItems += 1;
+      tempCart.totalItems += element.quantity;
     });
     return tempCart;
   } else if (type == "cart/removeFromCart") {
@@ -82,7 +81,6 @@ const prepareCart = (cartData, payloadData, type) => {
       tempCart.totalAmount += element.quantity * element.price;
       // tempCart.totalItems += 1;
       tempCart.totalItems += element.quantity;
-
     });
     return tempCart;
   } else {

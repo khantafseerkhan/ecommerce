@@ -2,7 +2,10 @@ import { DeleteTwoTone } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart, updateToCart } from "../../../store-management/reducers/cartReducer";
+import {
+  removeFromCart,
+  updateToCart,
+} from "../../../store-management/reducers/cartReducer";
 
 const CartList = () => {
   const cartDetails = useSelector((state) => state.cart.cartDetails);
@@ -22,26 +25,21 @@ const CartList = () => {
     dispatch(removeFromCart(index));
   };
 
-  const handleUpdateItem = (element,index, type) => {
-    let tempbulkQuantities=JSON.parse(JSON.stringify(bulkQuantities));
+  const handleUpdateItem = (element, index, quantity) => {
+    let tempbulkQuantities = JSON.parse(JSON.stringify(bulkQuantities));
 
-    if (type == "inc") {
-        tempbulkQuantities={
-            ...tempbulkQuantities,
-            ["quantity" + element.id]: tempbulkQuantities["quantity" + element.id] + 1,
-          }
-       setBulkQuantities(tempbulkQuantities);
-    } else if (type == "dec") {
-        tempbulkQuantities={
-            ...tempbulkQuantities,
-            ["quantity" + element.id]: tempbulkQuantities["quantity" + element.id] - 1,
-          }
-       setBulkQuantities(tempbulkQuantities);
-    }
 
-    let tempCartDetails=JSON.parse(JSON.stringify(cartDetails));   
-    tempCartDetails.lineItems[index].quantity=tempbulkQuantities["quantity"+element.id];
-    dispatch(updateToCart(tempCartDetails.lineItems[index]))
+    tempbulkQuantities = {
+      ...tempbulkQuantities,
+      ["quantity" + element.id]:quantity,
+    };
+    setBulkQuantities(tempbulkQuantities);
+    
+
+    let tempCartDetails = JSON.parse(JSON.stringify(cartDetails));
+    tempCartDetails.lineItems[index].quantity =
+      tempbulkQuantities["quantity" + element.id];
+    dispatch(updateToCart(tempCartDetails.lineItems[index]));
   };
   return (
     <>
@@ -72,7 +70,7 @@ const CartList = () => {
                             className="quatity-button"
                             onClick={() =>
                               bulkQuantities["quantity" + element.id] > 1
-                                ? handleUpdateItem(element,index, "dec")
+                                ? handleUpdateItem(element, index, (bulkQuantities["quantity" + element.id]-1))
                                 : ""
                             }
                           >
@@ -83,11 +81,21 @@ const CartList = () => {
                             <input
                               type="number"
                               value={bulkQuantities["quantity" + element.id]}
+                              onChange={(e)=>{
+                                setBulkQuantities(
+                                  {...bulkQuantities,["quantity" + element.id]:parseInt(e.target.value)}
+                                  );
+                                  handleUpdateItem(element, index, parseInt(e.target.value))
+                              
+                              }}
+
                             />
                           </div>
                           <div
                             className="quatity-button"
-                            onClick={() => handleUpdateItem(element,index, "inc")}
+                            onClick={() =>
+                              handleUpdateItem(element, index, (bulkQuantities["quantity" + element.id]+1))
+                            }
                           >
                             +
                           </div>
