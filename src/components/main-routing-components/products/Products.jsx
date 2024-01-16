@@ -15,19 +15,17 @@ import Filters from "./Filter";
 const Products = () => {
   const [productList, setProductList] = useState([]);
   const [totalProducts, setTotalProducts] = useState([]);
-const [filteredProducts,setFilteredProducts]=useState([])
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const itemPerPage = 5;
   const [categoriesList, setCategoriesList] = useState([]);
-  const [search,setSearch]=useState("");
-  const [selectedFilteredList,setSelectedFilteredList]=useState([])
+  const [search, setSearch] = useState("");
+  const [selectedFilteredList, setSelectedFilteredList] = useState([]);
 
   useEffect(() => {
     getCategories();
 
     getProductsList();
   }, []);
-
-
 
   const getCategories = () => {
     fetch(`https://fakestoreapi.com/products/categories`)
@@ -42,46 +40,45 @@ const [filteredProducts,setFilteredProducts]=useState([])
       .then((res) => res.json())
       .then((data) => {
         setTotalProducts(data);
-        setFilteredProducts(data)
-
-       
+        setFilteredProducts(data);
       });
   };
 
   const onPageChange = (pageNumber) => {
     let fromIndex = pageNumber;
     fromIndex = fromIndex == 1 ? 0 : (fromIndex - 1) * itemPerPage;
-    let tempTotalProducts = JSON.parse(JSON.stringify(filteredProducts?filteredProducts:totalProducts));
+    let tempTotalProducts = JSON.parse(
+      JSON.stringify(filteredProducts ? filteredProducts : totalProducts)
+    );
     let tempArray = tempTotalProducts.splice(fromIndex, itemPerPage);
     setProductList(tempArray);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     onPageChange(1);
-  },[filteredProducts])
-
-
-
+  }, [filteredProducts]);
 
   const onFilterChange = (filterCheckList) => {
-    setSelectedFilteredList(filterCheckList)
+    setSelectedFilteredList(filterCheckList);
     let tempArray = JSON.parse(JSON.stringify(totalProducts));
-    
-    tempArray = tempArray.filter((element) =>
-    //filterCheckList.length>0?filterCheckList.includes(element.category):true
-     (filterCheckList.length>0?filterCheckList.includes(element.category):true) && (element.title.toLowerCase()).includes(search.toLowerCase())
-    );
-    setFilteredProducts(tempArray)
 
+    tempArray = tempArray.filter(
+      (element) =>
+        //filterCheckList.length>0?filterCheckList.includes(element.category):true
+        (filterCheckList.length > 0
+          ? filterCheckList.includes(element.category)
+          : true) && element.title.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredProducts(tempArray);
   };
 
-  const handleSearch=()=>{
-    onFilterChange(selectedFilteredList)
-  }
+  const handleSearch = () => {
+    onFilterChange(selectedFilteredList);
+  };
   return (
-    <Grid container >
+    <Grid container>
       <Grid item xs={3} sx={{ mr: 2 }} className={"custom-container shadow"}>
-        <Grid container >
+        <Grid container>
           <Grid item xs={12}>
             <div className="header-section">
               <div className="left-section">Filters</div>
@@ -107,7 +104,7 @@ const [filteredProducts,setFilteredProducts]=useState([])
       </Grid>
 
       <Grid item xs={8.8} className={"custom-container shadow"}>
-        <Grid container >
+        <Grid container>
           <Grid item xs={12}>
             <div className="header-section">
               <div className="left-section">Products</div>
@@ -115,14 +112,16 @@ const [filteredProducts,setFilteredProducts]=useState([])
                 <TextField
                   placeholder={"Search Product By Title ..."}
                   value={search}
-                  onChange={(e)=>setSearch(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter"?handleSearch():""}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={(e) => (e.key === "Enter" ? handleSearch() : "")}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment>
-                        <Search onClick={(e)=>{(handleSearch());
-                        }}
-                        sx={{cursor:'pointer'}}
+                        <Search
+                          onClick={(e) => {
+                            handleSearch();
+                          }}
+                          sx={{ cursor: "pointer" }}
                         />
                       </InputAdornment>
                     ),
@@ -141,21 +140,29 @@ const [filteredProducts,setFilteredProducts]=useState([])
             </Grid>
           )}
 
-          {productList.map((element, index) => {
-            return (
-              <Grid item xs={3.7} sx={{ m: 1 }}>
-                <ProductCart
-                  title={element.title}
-                  price={element.price}
-                  category={element.category}
-                  descrption={element.descrption}
-                  id={element.id}
-                  img={element.image}
-                  rating={element.rating}
-                />
-              </Grid>
-            );
-          })}
+          {productList.length > 0 ? (
+            productList.map((element, index) => {
+              return (
+                <Grid item xs={3.7} sx={{ m: 1 }}>
+                  <ProductCart
+                    title={element.title}
+                    price={element.price}
+                    category={element.category}
+                    descrption={element.descrption}
+                    id={element.id}
+                    img={element.image}
+                    rating={element.rating}
+                  />
+                </Grid>
+              );
+            })
+          ) : (
+            <Grid item xs={12}>
+               <div className="filter-container">
+                <i>Products Not Availble ... </i>
+              </div>
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Grid>
