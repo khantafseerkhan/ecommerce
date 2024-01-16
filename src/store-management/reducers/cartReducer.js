@@ -63,7 +63,13 @@ const prepareCart = (cartData, payloadData, type) => {
     let index = tempCart.lineItems.findIndex(
       (element) => element.id == payloadData.id
     );
-    tempCart.lineItems[index].quantity = payloadData.quantity;
+    if(payloadData.quantity==0){
+      tempCart.lineItems.splice(index, 1);
+
+    }else{
+      tempCart.lineItems[index].quantity = payloadData.quantity;
+
+    }
     tempCart.totalAmount = 0;
     tempCart.totalItems = 0;
     tempCart.lineItems.forEach((element) => {
