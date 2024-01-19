@@ -11,6 +11,10 @@ const initialState = {
     billingAddress: {},
     paymentType: "Cash on delivery",
   },
+  toaster:{
+    status:true,
+    message:"successfully added"
+  }
 };
 export const cartSlice = createSlice({
   name: "cart",
@@ -46,7 +50,7 @@ export const cartSlice = createSlice({
 
 const prepareCart = (cartData, payloadData, type) => {
   let tempCart = JSON.parse(JSON.stringify(cartData));
-  if (type == "cart/addToCart") {
+  if (type === "cart/addToCart") {
     tempCart.lineItems.push(payloadData);
     tempCart.lastUpdateAt = new Date();
     tempCart.totalAmount = 0;
@@ -59,11 +63,11 @@ const prepareCart = (cartData, payloadData, type) => {
     });
 
     return tempCart;
-  } else if (type == "cart/updateToCart") {
+  } else if (type === "cart/updateToCart") {
     let index = tempCart.lineItems.findIndex(
-      (element) => element.id == payloadData.id
+      (element) => element.id === payloadData.id
     );
-    if(payloadData.quantity==0){
+    if(payloadData.quantity===0){
       tempCart.lineItems.splice(index, 1);
 
     }else{
@@ -78,7 +82,8 @@ const prepareCart = (cartData, payloadData, type) => {
       tempCart.totalItems += element.quantity;
     });
     return tempCart;
-  } else if (type == "cart/removeFromCart") {
+  } else if (type === "cart/removeFromCart") {
+    
     let index = payloadData;
     tempCart.lineItems.splice(index, 1);
     tempCart.totalAmount = 0;

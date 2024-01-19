@@ -12,9 +12,9 @@ const CartTotalSummary=({cartDetails})=>{
     )
     useEffect(()=>{
         setCartAmountSummary({...cartAmountSummary,
-            totalActualAmount:Number(cartDetails.totalAmount==0?0:cartDetails.totalAmount.toFixed(2)),
-            tax:cartDetails.totalAmount==0?0:Number(((cartDetails.totalAmount/100)*3).toFixed(2)),
-            shippingChanges:cartDetails.totalAmount==0?0:5.50
+            totalActualAmount:Number(cartDetails.totalAmount===0?0:cartDetails.totalAmount.toFixed(2)),
+            tax:cartDetails.totalAmount===0?0:Number(((cartDetails.totalAmount/100)*3).toFixed(2)),
+            shippingChanges:cartDetails.totalAmount===0?0:5.50
         })
 
     },[cartDetails])

@@ -1,5 +1,5 @@
 import { Button, Grid } from "@mui/material";
-import { useDebugValue, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   updateToCart,
 } from "../../../store-management/reducers/cartReducer";
 import { getProductById } from "../../../services/products.service";
+import ProductAlert from "../../custom-components/ProductAlert";
 
 const Product = () => {
   const [productDetails, setProductDetails] = useState(null);
@@ -15,6 +16,11 @@ const Product = () => {
   const dispatch = useDispatch();
   const cartDetails = useSelector((state) => state.cart.cartDetails);
   const [isItemExist, setIsItemExist] = useState(false);
+
+  const [toaster,setToaster]=useState({
+    status:false,
+    message:""
+  })
   useEffect(() => {
     let productRes = getProductById(params.id);
     productRes
@@ -26,9 +32,10 @@ const Product = () => {
       });
   }, []);
 
+  
   useEffect(() => {
     let itemDetails = cartDetails.lineItems.find(
-      (element) => element.id == params.id
+      (element) => element.id === params.id
     );
     if (itemDetails) {
       setQuantity(itemDetails.quantity);
@@ -40,82 +47,94 @@ const Product = () => {
   const handleAddToCart = (productDetails) => {
     let preparedItemDetails = { ...productDetails, quantity: quantity };
     dispatch(addToCart(preparedItemDetails));
+    setToaster({...toaster,status:true,message:"Added to cart"})
   };
 
   const handleUpateCart = (productDetails) => {
     let preparedItemDetails = { ...productDetails, quantity: quantity };
     dispatch(updateToCart(preparedItemDetails));
+    setToaster({...toaster,status:true,message:"Updated to cart"})
+
   };
+
+
+
   return (
-    <Grid container spacing={2} className={"custom-container shadow"}>
-      {productDetails && (
-        <>
-          <Grid item xs={12} spacing={2}>
-            <Grid container spacing={2}>
-              <Grid item xs={6} spacing={2}>
-                <div className="product-img padding-36">
-                  <img src={productDetails.image} className={"single-img"} />
-                </div>
-              </Grid>
-              <Grid item xs={6} spacing={2}>
-                <div className="product-title">{productDetails.title}</div>
-                <div className="product-pricing">$ {productDetails.price}</div>
+    <>
+         
+         <ProductAlert status={toaster.status} message={toaster.message} updateToaster={()=>{setToaster({...toaster,status:false,message:""})}}/>
+<Grid container spacing={2} className={"custom-container shadow"}>
 
-                <div className="quantity-section">
-                  <div className="title mt-18">Quantity</div>
+{productDetails && (
+  <>
+    <Grid item xs={12} spacing={2}>
+      <Grid container spacing={2}>
+        <Grid item xs={6} spacing={2}>
+          <div className="product-img padding-36">
+            <img src={productDetails.image} className={"single-img"} />
+          </div>
+        </Grid>
+        <Grid item xs={6} spacing={2}>
+          <div className="product-title">{productDetails.title}</div>
+          <div className="product-pricing">$ {productDetails.price}</div>
 
-                  <div className={"quantity-container mt-18"}>
-                    <div
-                      className="quatity-button"
-                      onClick={() =>
-                        quantity > 1 ? setQuantity(quantity - 1) : ""
-                      }
-                    >
-                      -
-                    </div>
-                    <div className="quantity-input" o>
-                      <input type="number" 
-                      value={quantity}
-                      onChange={(e)=>{setQuantity(parseInt(e.target.value))}}
-                      />
-                    </div>
-                    <div
-                      className="quatity-button"
-                      onClick={() => setQuantity(quantity + 1)}
-                    >
-                      +
-                    </div>
-                  </div>
-                </div>
+          <div className="quantity-section">
+            <div className="title mt-18">Quantity</div>
 
-                <div className="mt-18">
-                  <Button
-                    variant="primary"
-                    className={"product-footer-button"}
-                    onClick={() =>
-                      isItemExist
-                        ? handleUpateCart(productDetails)
-                        : handleAddToCart(productDetails)
-                    }
-                  >
-                    {isItemExist ? "Update to cart" : "Add to cart"}
-                  </Button>
-                </div>
-              </Grid>
-            </Grid>
-          </Grid>
+            <div className={"quantity-container mt-18"}>
+              <div
+                className="quatity-button"
+                onClick={() =>
+                  quantity > 1 ? setQuantity(quantity - 1) : ""
+                }
+              >
+                -
+              </div>
+              <div className="quantity-input" o>
+                <input type="number" 
+                value={quantity}
+                onChange={(e)=>{setQuantity(parseInt(e.target.value))}}
+                />
+              </div>
+              <div
+                className="quatity-button"
+                onClick={() => setQuantity(quantity + 1)}
+              >
+                +
+              </div>
+            </div>
+          </div>
 
-          <Grid item xs={12} spacing={2}>
-            <Grid item xs={12} spacing={2}>
-              <p className="para">
-                <div className="para-title mb-18 ">Descrption</div>
-                {productDetails.description}
-              </p>
-            </Grid>
-          </Grid>
-        </>
-      )}
+          <div className="mt-18">
+            <Button
+              variant="primary"
+              className={"product-footer-button"}
+              onClick={() =>
+                isItemExist
+                  ? handleUpateCart(productDetails)
+                  : handleAddToCart(productDetails)
+              }
+            >
+              {isItemExist ? "Update to cart" : "Add to cart"}
+            </Button>
+          </div>
+        </Grid>
+      </Grid>
     </Grid>
+
+    <Grid item xs={12} spacing={2}>
+      <Grid item xs={12} spacing={2}>
+        <p className="para">
+          <div className="para-title mb-18 ">Descrption</div>
+          {productDetails.description}
+        </p>
+      </Grid>
+    </Grid>
+  </>
+)}
+</Grid>
+    </>
+   
   );
 };
 

@@ -1,23 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const CustomPagination = ({ data, itemsPerPage, onPageChange }) => {
-  const [paginationNumbers, setPaginationNumbers] = useState([]);
-  const [activePagination, setActivePagination] = useState(1);
+  const [activePagination, setActivePagination] = useState();
   const handlePagination = (pageNo) => {
     if (pageNo !== activePagination) {
-      onPageChange(pageNo);
+
+      let fromIndex = (pageNo - 1) * itemsPerPage;
+      let toIndex=fromIndex + itemsPerPage
+    
+      onPageChange(fromIndex,toIndex);
+
     }
     setActivePagination(pageNo);
   };
 
-  useEffect(() => {
+  const paginationNumbers=useMemo(()=>{
     let tempArray = [];
     const noOfPages = Math.ceil(data.length / itemsPerPage);
     for (let index = 1; index <= noOfPages; index++) {
       tempArray.push(index);
     }
-    setPaginationNumbers(tempArray);
-    setActivePagination(1);
+    return tempArray;
+  },[data,itemsPerPage]);
+
+
+
+  useEffect(() => {
+    handlePagination(1)
   }, [data]);
 
   return (
@@ -26,7 +35,7 @@ const CustomPagination = ({ data, itemsPerPage, onPageChange }) => {
         {paginationNumbers.map((element) => {
           return (
             <li
-              className={element == activePagination ? "pagination-active" : ""}
+              className={element === activePagination ? "pagination-active" : ""}
               onClick={(e) => {
                 handlePagination(element);
               }}

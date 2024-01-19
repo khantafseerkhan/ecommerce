@@ -63,6 +63,7 @@ body {
   padding: 10px;
   cursor: pointer;
   border: 1px solid #e8d7d7;
+  margin: 7px;
 }
 .product-title {
   content-visibility: auto;

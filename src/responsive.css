@@ -1,0 +1,21 @@
+
+
+.mobile-customize-filter .close{
+    display: none;
+}
+
+
+@media screen and (max-width: 600px) {
+
+.mobile-customize-filter{
+    position: absolute;
+    z-index: 1;
+    right: 44px;
+    height: 100vh;
+}
+
+.close{
+    display: block !important;
+}
+
+}

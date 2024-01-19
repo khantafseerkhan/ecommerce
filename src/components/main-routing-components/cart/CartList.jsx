@@ -28,13 +28,11 @@ const CartList = () => {
   const handleUpdateItem = (element, index, quantity) => {
     let tempbulkQuantities = JSON.parse(JSON.stringify(bulkQuantities));
 
-
     tempbulkQuantities = {
       ...tempbulkQuantities,
-      ["quantity" + element.id]:quantity,
+      ["quantity" + element.id]: quantity,
     };
     setBulkQuantities(tempbulkQuantities);
-    
 
     let tempCartDetails = JSON.parse(JSON.stringify(cartDetails));
     tempCartDetails.lineItems[index].quantity =
@@ -70,7 +68,11 @@ const CartList = () => {
                             className="quatity-button"
                             onClick={() =>
                               bulkQuantities["quantity" + element.id] > 1
-                                ? handleUpdateItem(element, index, (bulkQuantities["quantity" + element.id]-1))
+                                ? handleUpdateItem(
+                                    element,
+                                    index,
+                                    bulkQuantities["quantity" + element.id] - 1
+                                  )
                                 : ""
                             }
                           >
@@ -81,20 +83,29 @@ const CartList = () => {
                             <input
                               type="number"
                               value={bulkQuantities["quantity" + element.id]}
-                              onChange={(e)=>{
-                                setBulkQuantities(
-                                  {...bulkQuantities,["quantity" + element.id]:parseInt(e.target.value)}
-                                  );
-                                  handleUpdateItem(element, index, parseInt(e.target.value))
-                              
+                              onChange={(e) => {
+                                setBulkQuantities({
+                                  ...bulkQuantities,
+                                  ["quantity" + element.id]: parseInt(
+                                    e.target.value
+                                  ),
+                                });
+                                handleUpdateItem(
+                                  element,
+                                  index,
+                                  parseInt(e.target.value)
+                                );
                               }}
-
                             />
                           </div>
                           <div
                             className="quatity-button"
                             onClick={() =>
-                              handleUpdateItem(element, index, (bulkQuantities["quantity" + element.id]+1))
+                              handleUpdateItem(
+                                element,
+                                index,
+                                bulkQuantities["quantity" + element.id] + 1
+                              )
                             }
                           >
                             +
