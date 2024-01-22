@@ -1,6 +1,7 @@
 import { Checkbox } from "@mui/material";
 
 const Filters = ({ selectedFilteredList, categories, handleFilters }) => {
+  
   return (
     <div className="filters-list-container">
       <ul>

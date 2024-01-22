@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import { useContext, useEffect, useMemo, useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Filters from "./Filter";
 import {
   getAllProducts,
@@ -13,9 +13,8 @@ const Products = () => {
   const itemPerPage = 6;
   const [categoriesList, setCategoriesList] = useState([]);
 
-  const [productList, setProductList] = useState([]);
-  const [selectedFilteredList, setSelectedFilteredList] = useState([]);
-  const [search,setSearch]=useState("");
+  const [selectedFilteredList, setSelectedFilteredList] = useState();
+  const [search, setSearch] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,11 +23,13 @@ const Products = () => {
 
         const categoriesData = await getCategoriesList();
         setCategoriesList(categoriesData);
+        setSelectedFilteredList([]);
       } catch (error) {
         // Handle errors
         console.error("Error fetching data:", error);
         setTotalProducts([]);
         setCategoriesList([]);
+        setSelectedFilteredList([]);
       }
     };
 
@@ -36,8 +37,8 @@ const Products = () => {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    let tempArray = JSON.parse(JSON.stringify(totalProducts));
-
+    // let tempArray = JSON.parse(JSON.stringify(totalProducts));
+    let tempArray = [...totalProducts];
     tempArray = tempArray.filter(
       (element) =>
         //filterCheckList.length>0?filterCheckList.includes(element.category):true
@@ -46,7 +47,7 @@ const Products = () => {
           : true) && element.title.toLowerCase().includes(search.toLowerCase())
     );
     return tempArray;
-  }, [totalProducts,selectedFilteredList, search]);
+  }, [selectedFilteredList, search]);
 
   const handleFilterChange = (check, filterName) => {
     let tempArray = [...selectedFilteredList];
@@ -59,8 +60,6 @@ const Products = () => {
     setSelectedFilteredList(tempArray);
   };
 
-
-
   const FilterSection = () => {
     if (categoriesList.length === 0)
       return (
@@ -71,7 +70,6 @@ const Products = () => {
     else
       return (
         <Filters
-
           categories={categoriesList}
           selectedFilteredList={selectedFilteredList}
           handleFilters={handleFilterChange}
@@ -81,7 +79,12 @@ const Products = () => {
 
   const ProductList = () => {
     if (filteredProducts.length > 0)
-      return <ProductCatelog productList={filteredProducts} itemPerPage={itemPerPage}/>;
+      return (
+        <ProductCatelog
+          productList={filteredProducts}
+          itemPerPage={itemPerPage}
+        />
+      );
     else
       return (
         <div className="filter-container">
@@ -92,21 +95,21 @@ const Products = () => {
 
   return (
     <Grid container spacing={2}>
+
       <Grid
         item
-        className={"custom-container mobile-customize-filter shadow"}
+        className={"custom-container  shadow"}
         lg={3}
         md={4}
         sm={12}
         xs={12}
         sx={{ ml: 1, mr: 1 }}
       >
-        
         <div>
           <div className="header-section">
             <div className="left-section">Filters</div>
-            {/* <div className="right-section anchorTag">Clear All</div> */}
-            <div className="close " > X</div>
+            <div className="right-section anchorTag">Clear All</div>
+            {/* <div className="close "> X</div> */}
           </div>
         </div>
 

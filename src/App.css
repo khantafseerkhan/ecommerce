@@ -92,6 +92,7 @@ body {
 }
 
 .product-img {
+  text-align: center;
 }
 
 .product-img img {
@@ -120,7 +121,7 @@ body {
   opacity: 0.9;
 }
 
-.quatity-button {
+.quantity-button {
   cursor: pointer;
   font-size: 23px;
   font-weight: bold;
@@ -267,8 +268,8 @@ body {
 }
 
 .single-img {
-  height: 400px !important;
-  width: 500px !important;
+  max-height: 360px;
+  max-width: 360px;
 }
 .padding-36 {
   padding: 36px;

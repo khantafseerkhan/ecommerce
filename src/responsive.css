@@ -18,4 +18,17 @@
     display: block !important;
 }
 
+
+.centered-content{
+    text-align-last: center;
+}
+
+.quantity-container{
+    justify-content: center;
+
+}
+
+.centered-content button{
+    width: 85%;
+}
 }

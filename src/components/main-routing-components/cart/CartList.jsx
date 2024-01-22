@@ -41,91 +41,81 @@ const CartList = () => {
   };
   return (
     <>
-      {cartDetails.lineItems.length > 0 && (
-        <div>
-          <Grid
-            container
-            xs={12}
-            spacing={2}
-            className={"custom-container shadow"}
-          >
-            <Grid item xs={12} spacing={2}>
-              {cartDetails.lineItems.map((element, index) => {
-                return (
-                  <Grid container sx={{ mb: 1 }} className="cart-list">
-                    <Grid item xs={3}>
-                      <img src={element.image} className="cart-list-img" />
-                    </Grid>
-                    <Grid item xs={9} className="cart-list-content">
-                      <div className="product-title">{element.title}</div>
-                      <div className="product-pricing">$ {element.price}</div>
-                    </Grid>
+      
+        <Grid container spacing={2} className={"custom-container shadow "}>
+          {cartDetails.lineItems.map((element, index) => {
+            return (
+              <Grid container sx={{ mb: 1 }} className="cart-list">
+                <Grid item xs={3}>
+                  <img src={element.image} className="cart-list-img" />
+                </Grid>
+                <Grid item xs={9} className="cart-list-content">
+                  <div className="product-title">{element.title}</div>
+                  <div className="product-pricing">$ {element.price}</div>
+                </Grid>
 
-                    <Grid item xs={12} className="cart-list-footer">
-                      <div className="cart-list-action-container">
-                        <div className={"quantity-container"}>
-                          <div
-                            className="quatity-button"
-                            onClick={() =>
-                              bulkQuantities["quantity" + element.id] > 1
-                                ? handleUpdateItem(
-                                    element,
-                                    index,
-                                    bulkQuantities["quantity" + element.id] - 1
-                                  )
-                                : ""
-                            }
-                          >
-                            -
-                          </div>
-
-                          <div className="quantity-input">
-                            <input
-                              type="number"
-                              value={bulkQuantities["quantity" + element.id]}
-                              onChange={(e) => {
-                                setBulkQuantities({
-                                  ...bulkQuantities,
-                                  ["quantity" + element.id]: parseInt(
-                                    e.target.value
-                                  ),
-                                });
-                                handleUpdateItem(
-                                  element,
-                                  index,
-                                  parseInt(e.target.value)
-                                );
-                              }}
-                            />
-                          </div>
-                          <div
-                            className="quatity-button"
-                            onClick={() =>
-                              handleUpdateItem(
+                <Grid item xs={12} className="cart-list-footer">
+                  <div className="cart-list-action-container">
+                    <div className={"quantity-container"}>
+                      <div
+                        className="quantity-button"
+                        onClick={() =>
+                          bulkQuantities["quantity" + element.id] > 1
+                            ? handleUpdateItem(
                                 element,
                                 index,
-                                bulkQuantities["quantity" + element.id] + 1
+                                bulkQuantities["quantity" + element.id] - 1
                               )
-                            }
-                          >
-                            +
-                          </div>
-                        </div>
-                        <div
-                          className="removebutton"
-                          onClick={() => handleRemoveItem(index)}
-                        >
-                          <DeleteTwoTone /> <span>Remove</span>
-                        </div>
+                            : ""
+                        }
+                      >
+                        -
                       </div>
-                    </Grid>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </Grid>
-        </div>
-      )}
+
+                      <div className="quantity-input">
+                        <input
+                          type="number"
+                          value={bulkQuantities["quantity" + element.id]}
+                          onChange={(e) => {
+                            setBulkQuantities({
+                              ...bulkQuantities,
+                              ["quantity" + element.id]: parseInt(
+                                e.target.value
+                              ),
+                            });
+                            handleUpdateItem(
+                              element,
+                              index,
+                              parseInt(e.target.value)
+                            );
+                          }}
+                        />
+                      </div>
+                      <div
+                        className="quantity-button"
+                        onClick={() =>
+                          handleUpdateItem(
+                            element,
+                            index,
+                            bulkQuantities["quantity" + element.id] + 1
+                          )
+                        }
+                      >
+                        +
+                      </div>
+                    </div>
+                    <div
+                      className="removebutton"
+                      onClick={() => handleRemoveItem(index)}
+                    >
+                      <DeleteTwoTone /> <span>Remove</span>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid>
+            );
+          })}
+        </Grid>
     </>
   );
 };

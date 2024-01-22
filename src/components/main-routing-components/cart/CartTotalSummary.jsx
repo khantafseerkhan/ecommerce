@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-
 const CartTotalSummary=({cartDetails})=>{
     const [cartAmountSummary,setCartAmountSummary]=useState(
         {
             totalActualAmount:0,
             tax:0,
             shippingChanges:0,
-
         }
     )
     useEffect(()=>{
