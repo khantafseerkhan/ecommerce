@@ -9,11 +9,18 @@ const ProductsHeader=({handleSearch})=>{
               <div className="left-section">Products</div>
               <div className="right-section">
                 <TextField
+                              sx={{
+                                "& .MuiInputBase-root": {
+                                    height: "2.01rem"
+                                }
+                            }}
+
                   placeholder={"Search Product By Title ..."}
                   onChange={(e) => handleSearch(e.target.value)}
                   InputProps={{
                     endAdornment: (
-                      <InputAdornment>
+                      <InputAdornment
+                      >
                         <Search />
                       </InputAdornment>
                     ),
