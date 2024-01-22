@@ -17,7 +17,7 @@ const [currentItems,setCurrentItems]=useState([]);
             <CustomPagination 
             data={productList}
             itemsPerPage={itemPerPage}
-            onPageChange={(fromIndex,toIndex)=>setCurrentItems(JSON.parse(JSON.stringify(productList)).splice(fromIndex,toIndex))}
+            onPageChange={(fromIndex)=>setCurrentItems(JSON.parse(JSON.stringify(productList)).splice(fromIndex,itemPerPage))}
 
             />
         </Grid>

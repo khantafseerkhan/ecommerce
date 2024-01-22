@@ -10,7 +10,7 @@ import ProductCatelog from "./ProductCatelog";
 
 const Products = () => {
   const [totalProducts, setTotalProducts] = useState([]);
-  const itemPerPage = 5;
+  const itemPerPage = 6;
   const [categoriesList, setCategoriesList] = useState([]);
 
   const [selectedFilteredList, setSelectedFilteredList] = useState();
