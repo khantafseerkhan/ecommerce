@@ -1,5 +1,7 @@
 import './App.css';
-import './responsive.css'
+import './responsive.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Route, Routes  } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";

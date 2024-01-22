@@ -1,9 +1,7 @@
 import { Search } from "@mui/icons-material"
 import { Grid, InputAdornment, TextField } from "@mui/material"
-import { useState } from "react"
 
-const ProductsHeader=()=>{
-    const [search,setSearch]=useState("")
+const ProductsHeader=({handleSearch})=>{
     return(
         <Grid container>
           <Grid item xs={12}>
@@ -12,8 +10,7 @@ const ProductsHeader=()=>{
               <div className="right-section">
                 <TextField
                   placeholder={"Search Product By Title ..."}
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => handleSearch(e.target.value)}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment>

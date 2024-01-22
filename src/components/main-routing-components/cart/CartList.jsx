@@ -6,8 +6,10 @@ import {
   removeFromCart,
   updateToCart,
 } from "../../../store-management/reducers/cartReducer";
+import ecommerceToaster from "../../custom-components/CustomHook";
 
 const CartList = () => {
+  const {tSuccess}=ecommerceToaster();
   const cartDetails = useSelector((state) => state.cart.cartDetails);
   const [bulkQuantities, setBulkQuantities] = useState({});
   const dispatch = useDispatch();
@@ -23,6 +25,8 @@ const CartList = () => {
 
   const handleRemoveItem = (index) => {
     dispatch(removeFromCart(index));
+    tSuccess('Removed from cart');
+
   };
 
   const handleUpdateItem = (element, index, quantity) => {
@@ -38,14 +42,16 @@ const CartList = () => {
     tempCartDetails.lineItems[index].quantity =
       tempbulkQuantities["quantity" + element.id];
     dispatch(updateToCart(tempCartDetails.lineItems[index]));
+    tSuccess('Updated into cart');
+
   };
   return (
     <>
-      
-        <Grid container spacing={2} className={"custom-container shadow "}>
+     
+        <Grid container  className={"custom-container shadow "}>
           {cartDetails.lineItems.map((element, index) => {
             return (
-              <Grid container sx={{ mb: 1 }} className="cart-list">
+              <Grid container  sx={{ mb: 1 }} className="cart-list">
                 <Grid item xs={3}>
                   <img src={element.image} className="cart-list-img" />
                 </Grid>
@@ -60,7 +66,7 @@ const CartList = () => {
                       <div
                         className="quantity-button"
                         onClick={() =>
-                          bulkQuantities["quantity" + element.id] > 1
+                          bulkQuantities["quantity" + element.id] >=0
                             ? handleUpdateItem(
                                 element,
                                 index,
@@ -83,11 +89,10 @@ const CartList = () => {
                                 e.target.value
                               ),
                             });
-                            handleUpdateItem(
-                              element,
-                              index,
-                              parseInt(e.target.value)
-                            );
+                            if(e.target.value!="")
+                              handleUpdateItem(element, index,parseInt(e.target.value));
+                            
+                           
                           }}
                         />
                       </div>

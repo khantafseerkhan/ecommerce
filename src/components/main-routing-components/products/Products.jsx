@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import Filters from "./Filter";
 import {
   getAllProducts,
@@ -10,7 +10,7 @@ import ProductCatelog from "./ProductCatelog";
 
 const Products = () => {
   const [totalProducts, setTotalProducts] = useState([]);
-  const itemPerPage = 6;
+  const itemPerPage = 5;
   const [categoriesList, setCategoriesList] = useState([]);
 
   const [selectedFilteredList, setSelectedFilteredList] = useState();
@@ -48,6 +48,10 @@ const Products = () => {
     );
     return tempArray;
   }, [selectedFilteredList, search]);
+
+  const handleSearch = useCallback((inputSearch) => {
+    setSearch(inputSearch);
+  }, []);
 
   const handleFilterChange = (check, filterName) => {
     let tempArray = [...selectedFilteredList];
@@ -94,8 +98,7 @@ const Products = () => {
   };
 
   return (
-    <Grid container spacing={2}>
-
+    <Grid container >
       <Grid
         item
         className={"custom-container  shadow"}
@@ -103,16 +106,8 @@ const Products = () => {
         md={4}
         sm={12}
         xs={12}
-        sx={{ ml: 1, mr: 1 }}
+        sx={{ ml: 1, mr: 1, mb: 1 }}
       >
-        <div>
-          <div className="header-section">
-            <div className="left-section">Filters</div>
-            <div className="right-section anchorTag">Clear All</div>
-            {/* <div className="close "> X</div> */}
-          </div>
-        </div>
-
         {<FilterSection />}
       </Grid>
 
@@ -125,7 +120,7 @@ const Products = () => {
         xs={12}
         sx={{ ml: 1, mr: 1 }}
       >
-        <ProductsHeader />
+        <ProductsHeader handleSearch={handleSearch} />
         <ProductList />
       </Grid>
     </Grid>

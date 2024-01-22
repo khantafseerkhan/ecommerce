@@ -7,29 +7,27 @@ import {
   updateToCart,
 } from "../../../store-management/reducers/cartReducer";
 import { getProductById } from "../../../services/products.service";
-import ProductAlert from "../../custom-components/ProductAlert";
+import ecommerceToaster from "../../custom-components/CustomHook";
 
 const Product = () => {
+  const { tSuccess } = ecommerceToaster();
   const [productDetails, setProductDetails] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const dispatch = useDispatch();
   const cartDetails = useSelector((state) => state.cart.cartDetails);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const isItemExist = cartDetails.lineItems.find(
     (element) => element.id.toString() === params.id
   );
+
   useEffect(() => {
-    console.log(cartDetails);
-    console.log("isItemExist :: ", isItemExist);
     const fetchProductDetails = async () => {
       try {
         const data = await getProductById(params.id);
         setProductDetails(data);
       } catch (error) {
         console.error("Error fetching product details:", error);
-        setError("Error fetching product details. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -52,15 +50,17 @@ const Product = () => {
     const preparedItemDetails = { ...productDetails, quantity };
     const cartAction = isItemExist ? updateToCart : addToCart;
     dispatch(cartAction(preparedItemDetails));
+    tSuccess(isItemExist ? "Updated to cart" : "Added to cart");
   };
 
   return (
     <>
       {loading && <p>Loading...</p>}
+
       {productDetails && (
-        <Grid container spacing={2} className="custom-container shadow">
+        <Grid container  className="custom-container shadow">
           <Grid item xs={12}>
-            <Grid container spacing={2}>
+            <Grid container >
               <Grid item lg={6} md={6} sm={12} xs={12}>
                 <div className="product-img padding-36">
                   <img
@@ -70,7 +70,14 @@ const Product = () => {
                   />
                 </div>
               </Grid>
-              <Grid item lg={6} md={6} sm={12} xs={12} className="centered-content">
+              <Grid
+                item
+                lg={6}
+                md={6}
+                sm={12}
+                xs={12}
+                className="centered-content"
+              >
                 <div className="product-title">{productDetails.title}</div>
                 <div className="product-pricing">${productDetails.price}</div>
 

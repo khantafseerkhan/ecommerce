@@ -24,14 +24,14 @@ const Cart = () => {
     else
       return (
         <>
-          <Grid item sx={{ m: 1 }} lg={7} md={7} sm={12} xs={12}>
+          <Grid item sx={{ m: 1 }} lg={7} md={6} sm={12} xs={12}>
             <CartList />
           </Grid>
 
           <Grid
             item
             lg={4}
-            md={4}
+            md={5}
             sm={12}
             xs={12}
             sx={{ m: 1 }}
@@ -44,7 +44,7 @@ const Cart = () => {
   };
   return (
     <>
-      <Grid xs={12} container spacing={2}>
+      <Grid xs={12} container >
         <ShowCart />
       </Grid>
     </>
